@@ -40,11 +40,7 @@ async function logout() {
 
     <!-- identity (portal) / login CTA (public) -->
     <div v-if="mode === 'portal'" class="mt-7 flex items-center gap-3 rounded-xl border border-[#0F2747]/10 bg-surface p-3">
-      <Avatar 
-        :alt="handle" 
-        :src="avatar" 
-        class="h-11 w-11 shrink-0 rounded-full object-cover"
-      />
+      <img :src="avatar" :alt="displayName" class="h-11 w-11 shrink-0 rounded-full object-cover" />
       <div class="min-w-0 flex-1">
         <p class="truncate text-sm font-bold text-ink">{{ displayName }}</p>
         <p class="text-xs text-muted">Creator · @{{ handle }}</p>
