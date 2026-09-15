@@ -5,7 +5,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 const { tr } = useLocale()
 
-const menu = computed(() => (props.mode === 'portal' ? portalMenu : publicMenu))
+const menu = useAppMenu(props.mode)
 
 function isActive(item: NavItem) {
   if (item.to === '/') return route.path === '/'
@@ -18,7 +18,13 @@ const displayName = computed(() => {
 })
 
 const handle = computed(() => authStore.user?.username)
-const avatar = computed(() => authStore.user?.influencer?.avatar || '')
+
+const avatar = computed(() => {
+  return authStore.user?.influencer?.avatar 
+    ? authStore.user?.influencer?.avatar
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName.value ?? handle.value ?? 'User')}&background=random&size=128`
+})
+
 async function logout() {
   await authStore.logout()
   await navigateTo('/')
@@ -34,11 +40,7 @@ async function logout() {
 
     <!-- identity (portal) / login CTA (public) -->
     <div v-if="mode === 'portal'" class="mt-7 flex items-center gap-3 rounded-xl border border-[#0F2747]/10 bg-surface p-3">
-      <Avatar 
-        :alt="handle" 
-        :src="avatar" 
-        class="h-11 w-11 shrink-0 rounded-full object-cover"
-      />
+      <img :src="avatar" :alt="displayName" class="h-11 w-11 shrink-0 rounded-full object-cover" />
       <div class="min-w-0 flex-1">
         <p class="truncate text-sm font-bold text-ink">{{ displayName }}</p>
         <p class="text-xs text-muted">Creator · @{{ handle }}</p>

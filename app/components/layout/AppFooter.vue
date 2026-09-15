@@ -33,6 +33,8 @@ const cols = [
     ],
   },
 ]
+
+const isDev = computed(() => import.meta.env.MODE === 'development')
 </script>
 
 <template>
@@ -68,7 +70,12 @@ const cols = [
         >
           {{ tr('ตั้งค่าคุกกี้', 'Cookie settings') }}
         </button>
-        <NuxtLink to="/docs" class="text-[11px] font-semibold text-[#5B6B82]/70 transition hover:text-primary">{{ tr('เอกสารทีม', 'Team docs') }}</NuxtLink>
+        <NuxtLink
+          v-if="isDev"
+          to="/docs" class="text-[11px] font-semibold text-[#5B6B82]/70 transition hover:text-primary"
+        >
+          {{ tr('เอกสารทีม', 'Team docs') }}
+        </NuxtLink>
         <p class="text-[11px] text-[#5B6B82]/60">{{ tr('บริษัท ประกิต โฮลดิ้งส์ จำกัด (มหาชน)', 'Prakit Holdings Public Company Limited') }}</p>
       </div>
     </div>

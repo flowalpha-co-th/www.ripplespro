@@ -6,7 +6,7 @@ const authStore = useAuthStore()
 const { tr } = useLocale()
 const open = ref(false)
 
-const menu = computed(() => (props.mode === 'portal' ? portalMenu : publicMenu))
+const menu = useAppMenu(props.mode)
 
 function isActive(item: NavItem) {
   if (item.to === '/') return route.path === '/'
@@ -14,11 +14,15 @@ function isActive(item: NavItem) {
 }
 
 const displayName = computed(() => {
-  const u = authStore.user
-  return u ? `${u.firstName} ${u.lastName}`.trim() : 'สมใจ ใจดี'
+  return authStore.user ? `${authStore.user.influencer?.first_name} ${authStore.user.influencer?.last_name}`.trim() : ''
 })
-const handle = computed(() => authStore.user?.username || 'somsai_jd')
-const avatar = computed(() => authStore.user?.avatar || 'https://i.pravatar.cc/120?img=32')
+const handle = computed(() => authStore.user?.username)
+
+const avatar = computed(() => {
+  return authStore.user?.influencer?.avatar 
+    ? authStore.user?.influencer?.avatar
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName.value ?? handle.value ?? 'User')}&background=random&size=128`
+})
 
 function logout() {
   open.value = false
