@@ -49,104 +49,18 @@ const fmt = (n: number) => n.toLocaleString()
       <p class="mt-1 text-sm text-muted">{{ tr('สรุปกิจกรรมในบัญชีของคุณวันนี้', "Here's a summary of your account activity today") }}</p>
     </section>
 
-    <!-- stat cards -->
-    <section class="mb-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-      <NuxtLink
-        v-for="s in stats"
-        :key="s.label"
-        :to="s.to"
-        class="group rounded-xl border border-[#0F2747]/10 bg-white p-6 shadow-sm transition-shadow hover:shadow-[0_24px_50px_-30px_rgb(45_91_255_/_35%)]"
-      >
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-xs text-muted">{{ tr(s.label, s.labelEn) }}</p>
-            <p class="mt-1 font-heading text-2xl font-extrabold text-ink">{{ s.value }}</p>
-          </div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 shrink-0">
-            <Icon :name="s.icon" class="h-6 w-6 text-primary shrink-0" />
-          </div>
+    <div class="rounded-xl border border-primary/30 bg-primary/5 p-8">
+      <div class="mx-auto flex max-w-md flex-col items-center text-center">
+        <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+            <Icon name="alert-circle" class="h-10 w-10 text-primary" />
         </div>
-        <span class="mt-3 inline-flex items-center gap-1 text-xs font-bold text-primary">{{ tr('ดูรายละเอียด', 'View details') }} <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></span>
-      </NuxtLink>
-    </section>
-
-    <!-- main grid -->
-    <section class="grid gap-6 lg:grid-cols-3">
-      <!-- transactions -->
-      <div class="rounded-xl border border-[#0F2747]/10 bg-white p-6 shadow-sm lg:col-span-2">
-        <div class="mb-5 flex items-center justify-between">
-          <h2 class="font-heading text-lg font-bold text-ink">{{ tr('ประวัติการรับเงินล่าสุด', 'Recent payouts') }}</h2>
-          <NuxtLink to="/portal/wallet" class="text-xs font-bold text-primary">{{ tr('ดูทั้งหมด', 'View all') }} →</NuxtLink>
-        </div>
-        <div class="space-y-3">
-          <div
-            v-for="t in txns"
-            :key="t.title"
-            class="flex items-center justify-between rounded-xl border border-[#0F2747]/10 bg-surface p-4"
-          >
-            <div class="flex items-center gap-3">
-              <div :class="['flex h-10 w-10 items-center justify-center rounded-lg', t.status === 'completed' ? 'bg-primary/10 text-primary' : 'bg-amber-50 text-amber-500']">
-                <Icon :name="t.status === 'completed' ? 'trending-up' : 'clock'" class="h-5 w-5" />
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-ink">{{ tr(t.title, t.titleEn) }}</p>
-                <p class="text-xs text-muted">{{ t.date }}</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <p :class="['font-bold', t.status === 'completed' ? 'text-primary' : 'text-amber-600']">+฿{{ fmt(t.amount) }}</p>
-              <span :class="['rounded-full px-2 py-0.5 text-[10px] font-bold', t.status === 'completed' ? 'bg-primary/10 text-primary' : 'bg-amber-100 text-amber-700']">{{ t.status === 'completed' ? tr('รับเงินแล้ว', 'Paid') : tr('รอรับเงิน', 'Pending') }}</span>
-            </div>
-          </div>
-        </div>
+        <h1 class="mb-3 font-heading text-2xl font-extrabold text-ink">
+            {{ tr('กำลังอยู่ในระหว่างการพัฒนา', 'Under Development') }}
+        </h1>
+        <p class="mb-8 text-sm text-muted">
+            {{ tr('ระบบในส่วนนี้ยังไม่เปิดให้บริการอย่างเป็นทางการ ทีมงานกำลังเร่งพัฒนาฟีเจอร์นี้ให้คุณใช้งานเร็วๆ นี้ ขออภัยในความไม่สะดวกครับ', 'This section is not yet officially available. Our team is working hard to bring this feature to you soon. We apologize for the inconvenience.') }}
+        </p>
       </div>
-      <!-- notifications -->
-      <div class="rounded-xl border border-[#0F2747]/10 bg-white p-6 shadow-sm">
-        <div class="mb-5 flex items-center justify-between">
-          <h2 class="font-heading text-lg font-bold text-ink">{{ tr('การแจ้งเตือน', 'Notifications') }}</h2>
-          <span v-if="notifications.unreadCount > 0" class="rounded-md bg-primary px-2.5 py-0.5 text-[10px] font-bold text-white">{{ notifications.unreadCount }} {{ tr('ใหม่', 'new') }}</span>
-        </div>
-        <div class="space-y-1">
-          <NuxtLink
-            v-for="n in notifList"
-            :key="n.id"
-            :to="`/portal/${n.link}`"
-            class="flex items-start gap-3 rounded-lg p-3 transition hover:bg-surface"
-          >
-            <div :class="['flex h-9 w-9 shrink-0 items-center justify-center rounded-lg', tintOf(n.cat).bg, tintOf(n.cat).fg]">
-              <Icon :name="n.icon" class="h-4 w-4" />
-            </div>
-            <div class="min-w-0 flex-1">
-              <p class="text-sm font-semibold text-ink">{{ tr(n.title, n.titleEn) }}</p>
-              <p class="line-clamp-2 text-xs text-muted">{{ tr(n.msg, n.msgEn) }}</p>
-              <p class="mt-0.5 text-[11px] text-[#5B6B82]/60">{{ tr(n.ago, n.agoEn) }}</p>
-            </div>
-            <span v-if="!n.read" :class="['mt-1.5 h-2 w-2 shrink-0 rounded-full', tintOf(n.cat).dot]" />
-          </NuxtLink>
-        </div>
-        <NuxtLink to="/portal/notifications" class="mt-3 block rounded-lg py-2 text-center text-sm font-bold text-primary transition hover:bg-primary/5">{{ tr('ดูทั้งหมด', 'View all') }}</NuxtLink>
-      </div>
-    </section>
-
-    <!-- quick actions -->
-    <section class="mt-8">
-      <h2 class="mb-4 font-heading text-lg font-bold text-ink">{{ tr('ทางลัด', 'Shortcuts') }}</h2>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <NuxtLink
-          v-for="a in actions"
-          :key="a.title"
-          :to="a.to"
-          class="flex items-center gap-4 rounded-xl border border-[#0F2747]/10 bg-white p-5 shadow-sm transition-shadow hover:shadow-[0_24px_50px_-30px_rgb(45_91_255_/_35%)]"
-        >
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10">
-            <Icon :name="a.icon" class="h-6 w-6 text-primary" />
-          </div>
-          <div>
-            <p class="font-bold text-ink">{{ tr(a.title, a.titleEn) }}</p>
-            <p class="text-xs text-muted">{{ tr(a.desc, a.descEn) }}</p>
-          </div>
-        </NuxtLink>
-      </div>
-    </section>
+    </div>
   </main>
 </template>
