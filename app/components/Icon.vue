@@ -15,6 +15,8 @@ const aliases: Record<string, string> = {
   'file-signature': 'FilePen',
   'check-square': 'SquareCheckBig',
   'x-circle': 'CircleX',
+  'check': 'Check',
+  'x-mark': 'X'
 }
 
 function toPascal(n: string) {

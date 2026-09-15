@@ -14,41 +14,45 @@ function isActive(item: NavItem) {
 
 const displayName = computed(() => {
   const u = authStore.user
-  return u ? `${u.firstName} ${u.lastName}`.trim() : 'สมใจ ใจดี'
+  return u ? `${u.influencer?.first_name || ''} ${u.influencer?.last_name || ''}`.trim() : ''
 })
-const handle = computed(() => authStore.user?.username || 'somsai_jd')
-const avatar = computed(() => authStore.user?.avatar || 'https://i.pravatar.cc/120?img=32')
 
-function logout() {
-  authStore.logout()
-  navigateTo('/')
+const handle = computed(() => authStore.user?.username)
+const avatar = computed(() => authStore.user?.influencer?.avatar || '')
+async function logout() {
+  await authStore.logout()
+  await navigateTo('/')
 }
 </script>
 
 <template>
   <aside class="fixed inset-y-0 left-0 z-50 hidden w-72 flex-col overflow-y-auto border-r border-[#0F2747]/10 bg-white px-6 py-7 lg:flex">
     <!-- logo -->
-    <NuxtLink :to="mode === 'portal' ? '/portal/dashboard' : '/'" class="self-center">
+    <NuxtLink to="/" class="self-center">
       <img src="/ripples-logo.png" alt="Ripples" class="h-24" />
     </NuxtLink>
 
     <!-- identity (portal) / login CTA (public) -->
     <div v-if="mode === 'portal'" class="mt-7 flex items-center gap-3 rounded-xl border border-[#0F2747]/10 bg-surface p-3">
-      <img :src="avatar" :alt="displayName" class="h-11 w-11 shrink-0 rounded-full object-cover" />
+      <Avatar 
+        :alt="handle" 
+        :src="avatar" 
+        class="h-11 w-11 shrink-0 rounded-full object-cover"
+      />
       <div class="min-w-0 flex-1">
         <p class="truncate text-sm font-bold text-ink">{{ displayName }}</p>
         <p class="text-xs text-muted">Creator · @{{ handle }}</p>
       </div>
-      <LayoutNotificationBell extra="shrink-0" align="left" />
+      <NotificationBell extra="shrink-0" align="left" />
     </div>
     <div v-else class="mt-7">
       <NuxtLink
-        to="/login"
+        :to="authStore.user ? '/portal/dashboard' : '/login'"
         class="flex items-center justify-between gap-2 rounded-lg bg-primary px-4 py-3 text-white shadow-[0_6px_16px_-6px_rgb(45_91_255_/_55%)] transition hover:bg-primaryDark"
       >
         <span class="text-left leading-tight">
           <span class="block text-[9px] font-bold uppercase tracking-wide text-white/70">Influencer / Creator</span>
-          <span class="mt-0.5 block text-sm font-bold">{{ tr('เข้าสู่ระบบ', 'Sign in') }}</span>
+          <span class="mt-0.5 block text-sm font-bold">{{ !authStore.user ? tr('เข้าสู่ระบบ', 'Sign in') : tr('ไปที่หน้าแดชบอร์ด', 'Go to Dashboard') }}</span>
         </span>
         <Icon name="arrow-right" class="h-4 w-4 shrink-0" />
       </NuxtLink>
@@ -83,16 +87,16 @@ function logout() {
         <Icon name="log-out" class="h-[18px] w-[18px]" /> {{ tr('ออกจากระบบ', 'Log out') }}
       </button>
       <div class="mt-5 flex items-center justify-between gap-3 border-t border-[#0F2747]/10 pt-5">
-        <LayoutLangToggle />
-        <LayoutSocialLinks />
+        <LangToggle />
+        <SocialLinks />
       </div>
     </div>
     <div v-else class="mt-6 space-y-5">
-      <LayoutLangToggle />
+      <LangToggle />
       <p class="text-[11px] leading-relaxed text-muted">
         {{ tr('Marketplace KOL & Influencer ยุคใหม่ — สำหรับแบรนด์และ creator ในประเทศไทย', 'The modern KOL & Influencer marketplace — for brands and creators in Thailand') }}
       </p>
-      <LayoutSocialLinks />
+      <SocialLinks />
     </div>
   </aside>
 </template>

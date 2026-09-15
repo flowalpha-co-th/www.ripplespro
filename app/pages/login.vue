@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { toast } from 'vue-sonner'
-
 definePageMeta({ layout: 'auth' })
 const { tr } = useLocale()
 useHead(() => ({ title: tr('เข้าสู่ระบบ — Ripples', 'Sign In — Ripples') }))
@@ -18,35 +16,33 @@ const username = ref('')
 const password = ref('')
 const remember = ref(false)
 const showPassword = ref(false)
-const loading = ref(false)
-const error = ref('')
+const loading = computed(() => authStore.loading)
+const error = computed(() => authStore.error)
 
 async function onSubmit() {
-  error.value = ''
   if (!username.value || !password.value) {
-    error.value = tr('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน', 'Please enter your username and password')
+    toast.error(tr('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน', 'Please enter your username and password'))
     return
   }
-  loading.value = true
-  try {
-    await authStore.login({ username: username.value, password: password.value })
-    toast.success(tr('เข้าสู่ระบบสำเร็จ', 'Signed in successfully'))
-    await navigateTo(redirectTarget())
-  } catch {
-    error.value = tr('เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่', 'Sign in failed. Please try again')
-  } finally {
-    loading.value = false
+
+  const status = await authStore.login(username.value, password.value, remember.value)
+    
+  if(!status) {
+    return
   }
+
+  toast.success(tr('เข้าสู่ระบบสำเร็จ', 'Signed in successfully'))
+  await navigateTo(redirectTarget())
 }
 
 async function social(provider: 'facebook' | 'google' | 'tiktok') {
-  loading.value = true
+  /*loading.value = true
   try {
     await authStore.loginWithSocial(provider)
     await navigateTo(redirectTarget())
   } finally {
     loading.value = false
-  }
+  }*/
 }
 </script>
 

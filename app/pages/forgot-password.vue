@@ -6,24 +6,25 @@ useHead(() => ({ title: tr('ลืมรหัสผ่าน — Ripples', 'For
 const authStore = useAuthStore()
 const email = ref('')
 const sent = ref(false)
-const loading = ref(false)
+const loading = computed(() => authStore.loading)
 const error = ref('')
 
 const validEmail = computed(() => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value.trim()))
 
 async function onSubmit() {
-  error.value = ''
   if (!validEmail.value) {
     error.value = tr('รูปแบบอีเมลไม่ถูกต้อง', 'Invalid email format')
     return
   }
-  loading.value = true
-  try {
-    await authStore.forgotPassword(email.value)
-    sent.value = true
+
+  error.value = ''
+  const result = await authStore.forgotPassword(email.value)
+  sent.value = result
+
+  if (result) {
     email.value = ''
-  } finally {
-    loading.value = false
+  } else {
+    error.value = authStore.error ?? tr('เกิดข้อผิดพลาด', 'Something went wrong')
   }
 }
 </script>
@@ -51,7 +52,7 @@ async function onSubmit() {
         <div>
           <p class="font-bold text-ink">{{ tr('ส่งลิงก์รีเซ็ตรหัสผ่านแล้ว', 'Password reset link sent') }}</p>
           <p class="text-sm text-muted">{{ tr('กรุณาตรวจสอบกล่องอีเมลของคุณ', 'Please check your inbox') }}</p>
-          <NuxtLink to="/reset-password" class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">{{ tr('(ตัวอย่าง) เปิดหน้าตั้งรหัสผ่านใหม่', '(Demo) Open the reset-password page') }} <Icon name="arrow-right" class="h-3.5 w-3.5" /></NuxtLink>
+          <!--<NuxtLink to="/reset-password" class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline">{{ tr('(ตัวอย่าง) เปิดหน้าตั้งรหัสผ่านใหม่', '(Demo) Open the reset-password page') }} <Icon name="arrow-right" class="h-3.5 w-3.5" /></NuxtLink>-->
         </div>
       </div>
 

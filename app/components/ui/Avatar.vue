@@ -4,7 +4,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { cn } from '~/utils/utils'
 defineOptions({ inheritAttrs: false })
 function omitClass(attrs: Record<string, unknown>) { const { class: _, ...rest } = attrs; return rest }
 </script>

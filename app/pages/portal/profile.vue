@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'portal', middleware: 'auth' })
 
-import { toast } from 'vue-sonner'
+
 
 const { tr } = useLocale()
 useHead(() => ({ title: tr('โปรไฟล์ — Ripples', 'Profile — Ripples') }))

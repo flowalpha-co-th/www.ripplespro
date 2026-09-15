@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { toast } from 'vue-sonner'
-
 definePageMeta({ layout: 'auth' })
 const { tr } = useLocale()
 useHead(() => ({ title: tr('สมัครสมาชิก — Ripples', 'Sign Up — Ripples') }))
@@ -13,45 +11,71 @@ const email = ref('')
 const username = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-const accepted = ref(false)
+const acceptedTerms = ref(false)
+const acceptedMarketing = ref(false)
 const showPw = ref(false)
 const showConfirm = ref(false)
-const loading = ref(false)
-const error = ref('')
+
+const passwordRequirements = reactive({
+  length: false,
+  uppercase: false,
+  lowercase: false,
+  number: false,
+  special: false,
+})
+
+const validatePassword = () => {
+  setTimeout(() => {
+    passwordRequirements.length = password.value.length >= 8
+    passwordRequirements.uppercase = /[A-Z]/.test(password.value)
+    passwordRequirements.lowercase = /[a-z]/.test(password.value)
+    passwordRequirements.number = /[0-9]/.test(password.value)
+    passwordRequirements.special = /[!@#$%^&*]/.test(password.value)
+  }, 300)
+}
 
 async function onSubmit() {
-  error.value = ''
   if (!firstName.value || !lastName.value || !email.value || !username.value || !password.value) {
-    error.value = tr('กรุณากรอกข้อมูลให้ครบทุกช่อง', 'Please fill in all fields')
+    authStore.error = tr('กรุณากรอกข้อมูลให้ครบ', 'Please fill in all fields')
     return
   }
+
   if (password.value.length < 8) {
-    error.value = tr('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร', 'Password must be at least 8 characters')
+    authStore.error = tr('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร', 'Password must be at least 8 characters')
     return
   }
+
   if (password.value !== confirmPassword.value) {
-    error.value = tr('รหัสผ่านไม่ตรงกัน', 'Passwords do not match')
+    authStore.error = tr('รหัสผ่านไม่ตรงกัน', 'Passwords do not match')
     return
   }
-  if (!accepted.value) {
-    error.value = tr('กรุณายอมรับเงื่อนไขก่อนดำเนินการต่อ', 'Please accept the terms before continuing')
+  
+  if (!acceptedTerms.value) {
+    authStore.error = tr('กรุณายอมรับเงื่อนไขก่อนดำเนินการต่อ', 'Please accept the terms before continuing')
     return
   }
-  loading.value = true
+
   try {
-    await authStore.register({
+    const status = await authStore.register({
       firstName: firstName.value,
       lastName: lastName.value,
       email: email.value,
       username: username.value,
       password: password.value,
+      confirmPassword: confirmPassword.value,
+      isConsentToTerms: acceptedTerms.value,
+      isConsentMarketing: acceptedMarketing.value,
     })
+
+    if (!status) {
+      return
+    }
+    
     toast.success(tr('สมัครสมาชิกสำเร็จ', 'Account created successfully'))
     await navigateTo('/portal/dashboard')
   } catch {
-    error.value = tr('สมัครสมาชิกไม่สำเร็จ กรุณาลองใหม่', 'Sign up failed. Please try again')
-  } finally {
-    loading.value = false
+    toast.error(tr('สมัครสมาชิกไม่สำเร็จ กรุณาลองใหม่', 'Sign up failed. Please try again'))
+    authStore.error = tr('สมัครสมาชิกไม่สำเร็จ กรุณาลองใหม่', 'Sign up failed. Please try again')
   }
 }
 </script>
@@ -81,12 +105,19 @@ async function onSubmit() {
         <div>
           <label class="mb-1.5 block text-sm font-semibold text-ink">{{ tr('ชื่อผู้ใช้', 'Username') }}</label>
           <input v-model="username" type="text" placeholder="username" class="w-full rounded-lg border border-[#0F2747]/15 bg-surface px-4 py-3 text-sm outline-none transition focus:border-primary/50" />
+          <p class="mt-1 text-xs text-muted">{{ tr('เฉพาะตัวอักษรภาษาอังกฤษและตัวเลขเท่านั้น', 'English letters and numbers only') }}</p>
         </div>
         <div class="grid gap-4 sm:grid-cols-2">
           <div>
             <label class="mb-1.5 block text-sm font-semibold text-ink">{{ tr('รหัสผ่าน', 'Password') }}</label>
             <div class="relative">
-              <input v-model="password" :type="showPw ? 'text' : 'password'" placeholder="••••••••" class="w-full rounded-lg border border-[#0F2747]/15 bg-surface px-4 py-3 pr-11 text-sm outline-none transition focus:border-primary/50" />
+              <input 
+                v-model="password" 
+                :type="showPw ? 'text' : 'password'" 
+                placeholder="••••••••" 
+                class="w-full rounded-lg border border-[#0F2747]/15 bg-surface px-4 py-3 pr-11 text-sm outline-none transition focus:border-primary/50" 
+                @input="validatePassword"
+              />
               <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#5B6B82]/60 transition hover:text-ink" @click="showPw = !showPw"><Icon :name="showPw ? 'eye-off' : 'eye'" class="h-4 w-4" /></button>
             </div>
           </div>
@@ -98,13 +129,26 @@ async function onSubmit() {
             </div>
           </div>
         </div>
-        <label class="flex items-start gap-2 text-xs leading-relaxed text-muted">
-          <input v-model="accepted" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-[#0F2747]/20 text-primary" />
+        <PasswordValidateRule 
+          :password="password" 
+          :password-requirements="passwordRequirements" 
+        />
+        <hr>
+        <div class="space-y-1">
+          <label class="flex items-start gap-2 text-xs leading-relaxed text-muted">
+          <input v-model="acceptedTerms" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-[#0F2747]/20 text-primary" />
           <span>{{ tr('ฉันยอมรับ', 'I accept the') }} <NuxtLink to="/terms" class="font-semibold text-primary hover:underline">{{ tr('ข้อกำหนดและเงื่อนไข', 'Terms and Conditions') }}</NuxtLink> {{ tr('และ', 'and') }} <NuxtLink to="/privacy" class="font-semibold text-primary hover:underline">{{ tr('นโยบายความเป็นส่วนตัว', 'Privacy Policy') }}</NuxtLink></span>
-        </label>
-        <p v-if="error" class="flex items-center gap-1 text-xs font-medium text-red-500"><Icon name="alert-circle" class="h-3.5 w-3.5 shrink-0" /> {{ error }}</p>
-        <button type="submit" :disabled="loading" class="w-full rounded-lg bg-primary px-4 py-3.5 text-sm font-bold text-white shadow-[0_12px_30px_-10px_rgb(45_91_255_/_70%)] transition hover:bg-primaryDark active:translate-y-0.5 disabled:opacity-60">
-          {{ loading ? tr('กำลังสมัคร...', 'Signing up...') : tr('สมัครสมาชิก', 'Sign Up') }}
+          </label>
+          <label class="flex items-start gap-2 text-xs leading-relaxed text-muted">
+            <input v-model="acceptedMarketing" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-[#0F2747]/20 text-primary" />
+            <span>{{ tr('ฉันยินยอมรับข่าวสาร/การตลาด', 'I agree to receive news and marketing updates') }}</span>
+          </label>
+        </div>
+        <p v-if="authStore.error" class="flex items-center gap-1 text-xs font-medium text-red-500">
+          <Icon name="alert-circle" class="h-3.5 w-3.5 shrink-0" /> {{ authStore.error }}
+        </p>
+        <button type="submit" :disabled="authStore.loading" class="w-full rounded-lg bg-primary px-4 py-3.5 text-sm font-bold text-white shadow-[0_12px_30px_-10px_rgb(45_91_255_/_70%)] transition hover:bg-primaryDark active:translate-y-0.5 disabled:opacity-60">
+          {{ authStore.loading ? tr('กำลังสมัคร...', 'Signing up...') : tr('สมัครสมาชิก', 'Sign Up') }}
         </button>
       </form>
 
