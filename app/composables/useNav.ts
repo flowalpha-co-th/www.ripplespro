@@ -6,10 +6,12 @@ export interface NavItem {
   icon?: string
 }
 
+const authStore = useAuthStore()
+
 /* Public marketing menu. "แคมเปญ" is teaser-gated → login (real list lives in portal). */
 export const publicMenu: NavItem[] = [
   { key: 'home', label: 'หน้าหลัก', labelEn: 'Home', to: '/' },
-  { key: 'campaigns', label: 'แคมเปญ', labelEn: 'Campaigns', to: '/login' },
+  { key: 'campaigns', label: 'แคมเปญ', labelEn: 'Campaigns', to: authStore.isAuthenticated ? '/portal/campaigns' : '/login' },
   { key: 'about', label: 'เกี่ยวกับเรา', labelEn: 'About', to: '/about' },
   { key: 'services', label: 'บริการ', labelEn: 'Services', to: '/services' },
   { key: 'faq', label: 'คำถามที่พบบ่อย', labelEn: 'FAQ', to: '/faq' },

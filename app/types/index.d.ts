@@ -6,23 +6,36 @@ export interface User {
   phone?: string
   //role: 'influencer' | 'brand' | 'admin'
   status: 'pending' | 'approved' | 'rejected'
-  createdAt: string
-  updatedAt: string
+  created_at: string
+  updated_at: string
   influencer: InfluencerProfile
 }
 
 export interface InfluencerProfile extends User {
-  firstName: string
-  lastName: string
+  first_name: string
+  last_name: string
   avatar?: string
   bio?: string
-  location?: string
-  categories: string[]
-  socialAccounts: SocialAccount[]
-  rateCard: RateCardItem[]
-  verificationStatus: 'pending' | 'approved' | 'rejected'
-  verificationDocuments: VerificationDocument[]
-  walletBalance: number
+  locations?: string[]
+  categories?: string[]
+  platforms: SocialAccount[]
+  rate_cards: RateCardItem[]
+  kyc_review: KycReview | null
+  verification_status: 'pending' | 'approved' | 'rejected'
+  verification_documents: VerificationDocument[]
+  wallet_balance: number
+}
+
+export interface KycReview {
+  id: number
+  reason?: string
+  status?: string
+  submitted_at?: string
+  reviewed_at?: string
+  reviewed_by?: string
+  reviewed_by_name?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface SocialAccount {

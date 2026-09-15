@@ -82,7 +82,7 @@ export const useApi = () => {
   const config = useRuntimeConfig()
   const auth = useAuthStore()
 
-  const base = () => `${config.public.apiBase}/v1`
+  const base = () => `${config.public.apiBase}`
 
   const newRequestId = () =>
     typeof crypto !== 'undefined' && 'randomUUID' in crypto

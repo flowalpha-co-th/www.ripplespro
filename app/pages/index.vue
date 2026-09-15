@@ -186,7 +186,7 @@ function splitName(b: Brand) {
           @click="goCampaigns"
           @keydown.enter="goCampaigns"
         >
-          <img :src="heroImg(c.img)" :alt="c.title" class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
+          <img :src="heroImg(c.img)" :alt="c.title" class="absolute inset-0 h-full w-full object-cover transition-transform duration-1200 group-hover:scale-105" />
           <div class="absolute inset-0 bg-gradient-to-t from-[#0F2747] via-[#0F2747]/55 to-[#0F2747]/10" />
           <div class="absolute inset-0 bg-gradient-to-r from-[#0F2747]/70 via-transparent to-transparent" />
 

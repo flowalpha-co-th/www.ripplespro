@@ -1,5 +1,5 @@
 {
-  "name": "kol-influencer-nuxt",
+  "name": "www.ripplespro",
   "private": true,
   "type": "module",
   "scripts": {
@@ -22,7 +22,6 @@
     "reka-ui": "^2.3.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "vue-sonner": "^1.3.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {

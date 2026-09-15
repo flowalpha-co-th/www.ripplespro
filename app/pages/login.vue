@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { toast } from 'vue-sonner'
-
 definePageMeta({ layout: 'auth' })
 const { tr } = useLocale()
 useHead(() => ({ title: tr('เข้าสู่ระบบ — Ripples', 'Sign In — Ripples') }))

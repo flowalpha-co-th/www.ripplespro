@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toast } from 'vue-sonner'
+
 import { notifCats, notifMatrix, tintOf, type NotifCategory } from '~/data/notifications'
 
 definePageMeta({ layout: 'portal', middleware: 'auth' })

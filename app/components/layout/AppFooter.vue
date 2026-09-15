@@ -44,7 +44,7 @@ const cols = [
           {{ tr('Marketplace KOL & Influencer', 'The modern KOL & Influencer') }}<br />{{ tr('ยุคใหม่ — สำหรับแบรนด์และ creator ในประเทศไทย', 'marketplace — for brands and creators in Thailand') }}
         </p>
         <div class="mt-5">
-          <LayoutSocialLinks />
+          <SocialLinks />
         </div>
       </div>
 

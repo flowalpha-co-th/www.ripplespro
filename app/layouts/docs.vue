@@ -4,7 +4,7 @@ const { tr } = useLocale()
 
 <template>
   <div class="relative min-h-screen overflow-x-hidden bg-[#E9EEF6] font-sans text-ink antialiased">
-    <LayoutGridOverlay />
+    <GridOverlay />
 
     <header class="sticky top-0 z-40 flex items-center justify-between gap-3 border-b border-[#0F2747]/10 bg-white/90 px-6 py-4 backdrop-blur-md lg:px-10">
       <NuxtLink to="/docs" class="flex items-center gap-3">

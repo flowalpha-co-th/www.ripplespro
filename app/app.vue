@@ -2,12 +2,10 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-  <Toaster position="top-right" rich-colors />
+  <AppToast />
 </template>
 
 <script setup lang="ts">
-import { Toaster } from 'vue-sonner'
-
 const authStore = useAuthStore()
 const languageStore = useLanguageStore()
 const { lang } = useLocale()

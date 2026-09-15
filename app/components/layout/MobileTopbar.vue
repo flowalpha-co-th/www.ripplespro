@@ -36,7 +36,7 @@ watch(() => route.path, () => { open.value = false })
       <img src="/ripples-logo.png" alt="Ripples" class="h-16" />
     </NuxtLink>
     <div class="flex items-center gap-2.5">
-      <LayoutNotificationBell v-if="mode === 'portal'" />
+      <NotificationBell v-if="mode === 'portal'" />
       <button
         type="button"
         aria-label="Menu"
@@ -122,8 +122,8 @@ watch(() => route.path, () => { open.value = false })
           <Icon name="log-out" class="h-[18px] w-[18px]" /> {{ tr('ออกจากระบบ', 'Log out') }}
         </button>
         <div class="mt-5 flex items-center justify-between gap-3 border-t border-[#0F2747]/10 pt-5">
-          <LayoutLangToggle />
-          <LayoutSocialLinks />
+          <LangToggle />
+          <SocialLinks />
         </div>
       </aside>
     </Transition>

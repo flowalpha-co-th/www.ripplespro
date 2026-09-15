@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { toast } from 'vue-sonner'
-import PasswordValidateRule from '~/components/common/PasswordValidateRule.vue'
-
 definePageMeta({ layout: 'auth' })
 const { tr } = useLocale()
 useHead(() => ({ title: tr('สมัครสมาชิก — Ripples', 'Sign Up — Ripples') }))
@@ -77,6 +74,7 @@ async function onSubmit() {
     toast.success(tr('สมัครสมาชิกสำเร็จ', 'Account created successfully'))
     await navigateTo('/portal/dashboard')
   } catch {
+    toast.error(tr('สมัครสมาชิกไม่สำเร็จ กรุณาลองใหม่', 'Sign up failed. Please try again'))
     authStore.error = tr('สมัครสมาชิกไม่สำเร็จ กรุณาลองใหม่', 'Sign up failed. Please try again')
   }
 }
@@ -146,7 +144,9 @@ async function onSubmit() {
             <span>{{ tr('ฉันยินยอมรับข่าวสาร/การตลาด', 'I agree to receive news and marketing updates') }}</span>
           </label>
         </div>
-        <p v-if="authStore.error" class="flex items-center gap-1 text-xs font-medium text-red-500"><Icon name="alert-circle" class="h-3.5 w-3.5 shrink-0" /> {{ authStore.error }}</p>
+        <p v-if="authStore.error" class="flex items-center gap-1 text-xs font-medium text-red-500">
+          <Icon name="alert-circle" class="h-3.5 w-3.5 shrink-0" /> {{ authStore.error }}
+        </p>
         <button type="submit" :disabled="authStore.loading" class="w-full rounded-lg bg-primary px-4 py-3.5 text-sm font-bold text-white shadow-[0_12px_30px_-10px_rgb(45_91_255_/_70%)] transition hover:bg-primaryDark active:translate-y-0.5 disabled:opacity-60">
           {{ authStore.loading ? tr('กำลังสมัคร...', 'Signing up...') : tr('สมัครสมาชิก', 'Sign Up') }}
         </button>

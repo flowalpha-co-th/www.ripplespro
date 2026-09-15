@@ -33,11 +33,17 @@ export default defineNuxtConfig({
   },
   vite: {
     server: {
-      allowedHosts: process.env.NUXT_PUBLIC_ALLOWED_HOSTS ? [process.env.NUXT_PUBLIC_ALLOWED_HOSTS] : ['kol-influencer-nuxt.test']
+      allowedHosts: process.env.NUXT_PUBLIC_ALLOWED_HOSTS ? [process.env.NUXT_PUBLIC_ALLOWED_HOSTS] : ['www.ripplespro.test'],
     },
   },
   routeRules: {
     '/campaigns': { redirect: '/portal/campaigns' },
     '/campaigns/**': { redirect: '/portal/campaigns' },
   },
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    }
+  ]
 })

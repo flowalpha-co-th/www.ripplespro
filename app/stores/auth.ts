@@ -157,6 +157,7 @@ export const useAuthStore = defineStore('auth', {
         return true
       } catch (err) {
         this.error = apiErrorMessage(err)
+        toast.error(this.error)
         return false
       } finally {
         this.loading = false

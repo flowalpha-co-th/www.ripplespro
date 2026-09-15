@@ -8,14 +8,15 @@ useHead(() => ({ title: tr('แดชบอร์ด — Ripples', 'Dashboard �
 
 const notifications = useNotificationsStore()
 const authStore = useAuthStore()
-const user = computed(() => authStore.$state.user)
+const user = computed(() => authStore.currentUser)
+
 const displayName = computed(() => {
-  return user.value ? `${user.value.influencer.firstName}`.trim() : ''
+  return user.value ? `${user.value.influencer?.first_name || ''}`.trim() : ''
 })
 
 type Stat = { icon: string; label: string; labelEn: string; value: string; to: string }
 const stats: Stat[] = [
-  { icon: 'wallet', label: 'ยอดเงินในกระเป๋า', labelEn: 'Wallet balance', value: `฿${user.value?.influencer.walletBalance}`, to: '/portal/wallet' },
+  { icon: 'wallet', label: 'ยอดเงินในกระเป๋า', labelEn: 'Wallet balance', value: `฿${user.value?.influencer?.wallet_balance}`, to: '/portal/wallet' },
   { icon: 'briefcase', label: 'แคมเปญที่กำลังทำ', labelEn: 'Active campaigns', value: '3', to: '/portal/campaigns' },
   { icon: 'clock', label: 'งานที่ต้องส่ง', labelEn: 'Tasks to submit', value: '1', to: '/portal/tasks' },
   { icon: 'alert-circle', label: 'งานที่ต้องแก้ไข', labelEn: 'Tasks to revise', value: '1', to: '/portal/tasks' },
@@ -49,7 +50,7 @@ const fmt = (n: number) => n.toLocaleString()
     </section>
 
     <!-- stat cards -->
-    <section class="mb-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <section class="mb-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
       <NuxtLink
         v-for="s in stats"
         :key="s.label"
@@ -61,8 +62,8 @@ const fmt = (n: number) => n.toLocaleString()
             <p class="text-xs text-muted">{{ tr(s.label, s.labelEn) }}</p>
             <p class="mt-1 font-heading text-2xl font-extrabold text-ink">{{ s.value }}</p>
           </div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10">
-            <Icon :name="s.icon" class="h-6 w-6 text-primary" />
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 shrink-0">
+            <Icon :name="s.icon" class="h-6 w-6 text-primary shrink-0" />
           </div>
         </div>
         <span class="mt-3 inline-flex items-center gap-1 text-xs font-bold text-primary">{{ tr('ดูรายละเอียด', 'View details') }} <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" /></span>
