@@ -1,0 +1,1 @@
+import{c as e,u as t}from"./BsH2qd5s.js";import{t as n}from"./bcVh3teJ.js";var r=e((e,r)=>{if(!n().isAuthenticated)return t({path:`/login`,query:{redirect:e.fullPath}})});export{r as default};
