@@ -44,7 +44,7 @@ const resendVerification = async () => {
           :disabled="isResending" 
           class="text-sm font-medium underline hover:text-amber-700 disabled:opacity-50 whitespace-nowrap ml-4 flex items-center gap-1"
         >
-          <Icon v-if="isResending" name="loader-2" class="h-4 w-4 animate-spin" />
+          <Icon v-if="isResending" name="loader-circle" class="h-4 w-4 animate-spin" />
           {{ isResending ? tr('กำลังส่ง...', 'Sending...') : tr('ส่งอีเมลยืนยันอีกครั้ง', 'Resend Email') }}
         </button>
       </div>

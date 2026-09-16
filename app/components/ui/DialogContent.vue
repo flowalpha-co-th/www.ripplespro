@@ -14,7 +14,7 @@
 </template>
 <script setup lang="ts">
 import { DialogPortal, DialogOverlay, DialogContent as DialogContentPrimitive, DialogClose } from 'reka-ui'
-import { X } from 'lucide-vue-next'
+import { X } from '@lucide/vue'
 import { cn } from '~/utils/utils'
 defineOptions({ inheritAttrs: false })
 </script>

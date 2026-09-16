@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { icons } from 'lucide-vue-next'
+import * as icons from '@lucide/vue'
 
 /** Dynamic Lucide icon. Accepts kebab-case names (e.g. "layout-dashboard")
  *  matching the design markup, or PascalCase. Size is set via class (h-5 w-5). */
@@ -17,7 +17,7 @@ const aliases: Record<string, string> = {
   'x-circle': 'CircleX',
   'check': 'Check',
   'x-mark': 'X',
-  'loader-2': 'Loader2',
+  'loader-circle': 'LoaderCircle',
 }
 
 function toPascal(n: string) {
