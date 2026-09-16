@@ -16,7 +16,8 @@ const aliases: Record<string, string> = {
   'check-square': 'SquareCheckBig',
   'x-circle': 'CircleX',
   'check': 'Check',
-  'x-mark': 'X'
+  'x-mark': 'X',
+  'loader-2': 'Loader2',
 }
 
 function toPascal(n: string) {
