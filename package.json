@@ -11,13 +11,13 @@
     "deploy": "nuxt build --dotenv .env.production && cd .output && git init && git checkout -b portal-release && git add -A && git commit -m \"Deploy portal\" && git push -f git@github.com:flowalpha-co-th/www.ripplespro.git portal-release"
   },
   "dependencies": {
+    "@lucide/vue": "^1.46.0",
     "@pinia/nuxt": "^0.11.3",
     "@vueuse/nuxt": "^13.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-vue": "^8.6.0",
     "gsap": "^3.14.2",
-    "lucide-vue-next": "^0.511.0",
     "nuxt": "^4.3.1",
     "pinia": "^3.0.2",
     "reka-ui": "^2.3.0",

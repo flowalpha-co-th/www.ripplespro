@@ -14,7 +14,7 @@
 </template>
 <script setup lang="ts">
 import { DialogPortal, DialogOverlay, DialogContent, DialogClose } from 'reka-ui'
-import { X } from 'lucide-vue-next'
+import { X } from '@lucide/vue'
 import { cva } from 'class-variance-authority'
 import { cn } from '~/utils/utils'
 

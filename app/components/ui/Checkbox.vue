@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { CheckboxRoot, CheckboxIndicator } from 'reka-ui'
-import { Check } from 'lucide-vue-next'
+import { Check } from '@lucide/vue'
 import { cn } from '~/utils/utils'
 
 const props = defineProps<{

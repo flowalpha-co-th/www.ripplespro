@@ -3,6 +3,7 @@ export interface User {
   id: string
   username: string
   email: string
+  email_verified?: boolean
   phone?: string
   //role: 'influencer' | 'brand' | 'admin'
   status: 'pending' | 'approved' | 'rejected'

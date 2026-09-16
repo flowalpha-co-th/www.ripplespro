@@ -6,7 +6,7 @@ useHead(() => ({ title: tr('กำลังพัฒนา — Ripples', 'Under 
 </script>
 
 <template>
-  <main class="mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 py-20 lg:px-12">
+  <main class="flex items-center justify-center mx-auto w-full max-w-6xl px-6 py-20 lg:px-12">
     <div class="flex max-w-md flex-col items-center text-center">
       <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
         <Icon name="alert-circle" class="h-10 w-10 text-primary" />

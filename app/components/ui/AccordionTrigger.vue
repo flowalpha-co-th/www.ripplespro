@@ -8,7 +8,7 @@
 </template>
 <script setup lang="ts">
 import { AccordionHeader, AccordionTrigger } from 'reka-ui'
-import { ChevronDown } from 'lucide-vue-next'
+import { ChevronDown } from '@lucide/vue'
 import { cn } from '~/utils/utils'
 defineOptions({ inheritAttrs: false })
 </script>
