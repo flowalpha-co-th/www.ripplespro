@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { components } from 'reka-ui/constant'
-import PasswordValidateRule from '~/components/common/PasswordValidateRule.vue'
-
 definePageMeta({ layout: 'auth' })
 const { tr } = useLocale()
 useHead(() => ({ title: tr('ตั้งรหัสผ่านใหม่ — Ripples', 'Reset Password — Ripples') }))
